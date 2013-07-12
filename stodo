@@ -1,0 +1,67 @@
+#!/bin/env python
+
+import sys
+import getopt
+
+# globals
+version = "a.1"
+
+def usage(): #simple function to print the help/usage
+    print("\n---")
+    print("stodo - simple TODO cli application")
+    print("v.", version)
+    print("---")
+    print("Usage:")
+    print("Only one option per run!")
+    print("-h / --help\n\tprint usage summary (this)")
+    print("-l / --list\n\tlist all of the saved items, enumerated")
+    print("-c / --count\n\tprint a simple count of all saved items")
+    print("-a / --add \"[item]\"\n\tadd text between quotes as a new item")
+    print("-r / --remove [item number]\n\tremove the specified item")
+
+    print("\n")
+
+def display_list():
+    print("This function will display all saved items in the database")
+
+def add_item(add_string):
+    print("This function will add", add_string, "to the database when I take care of that")
+
+def remove_item(item_number):
+    print("This function will remove item number", item_number + ".")
+
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "hlca:r:", ["help", "list", "count", "add=", "remove="])
+
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+
+    if len(opts) == 0:
+        usage()
+        sys.exit()
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif opt in ("-l", "--list"):
+            display_list()
+            sys.exit()
+        elif opt in ("-c", "--count"):
+            display_count()
+            sys.exit()
+        elif opt in ("-a", "--add"):
+            add_item(arg)
+            sys.exit()
+        elif opt in ("-r", "--remove"):
+            if arg.isdigit():
+                remove_item(arg)
+                sys.exit()
+            else:
+                print("-r / --remove accepts only natural numbers")
+                sys.exit()
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
