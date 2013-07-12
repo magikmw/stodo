@@ -28,7 +28,7 @@ ver = "1.0"
 database = os.path.expanduser("~/.stodo")
 
 def usage(): #simple function to print the help/usage
-    print("\nUsage: stodo OPTION [ARGUMENT]")
+    print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
     print("Mandatory arguments to long versions are mandatory for short versions too.")
     print("   -h, --help\t\tprint usage summary (this)")
@@ -92,9 +92,12 @@ def display_count():
 def add_item(add_string):
     file_exists()
 
-    lines = [line.rstrip('\n') for line in open(database)]
-    highest_number = [token for token in lines[len(lines)-1].split() if token.isdigit()][0]
-    highest_number = int(highest_number)+1
+    if count_items() != 0:
+        lines = [line.rstrip('\n') for line in open(database)]
+        highest_number = [token for token in lines[len(lines)-1].split() if token.isdigit()][0]
+        highest_number = int(highest_number)+1
+    else:
+        highest_number = 1
     
     data_file = open( database, "a+")
     data_file.write(str(highest_number) + " - " + add_string + "\n")
