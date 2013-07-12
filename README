@@ -1,0 +1,52 @@
+-----
+stodo - a simple TODO CLI application
+-----
+Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+-----
+
+A small organizational application.
+Creates a file (~/.stodo by default) and allows you to append, remove, display
+and count items. Fully CLI, interface consists of few simple options.
+Easy to embedd in a login MoTD, etc.
+
+Right now the basic program is done. If I find I use it enough, my plans for now
+include simple tag interface that would allow for categorization of the entries,
+and perhaps a real database integration at some point.
+---
+
+Dependency:
+    Requires python3.
+    Note that the hashbang in the first line points to python, Arch Linux style.
+    With some tweaking it might be possible to run with python2, not sure if
+    I used any 3-specific libraries, besides changed syntax.
+
+Installation:
+    Put anywhere, set permission to execution and run './stodo'
+    OR
+    Put anywhere and run with 'python stodo' (or 'python3 stodo')
+    OR
+    [Comming soon]
+    Find on AUR (Arch Linux) and install manually or with your favourite AUR
+    pacman wrapper.
+
+-----
+Usage info available via 'stodo -h' or 'stodo --help', copy below.
+
+Usage: stodo OPTION [ARGUMENT]
+Only the first option on the command line will execute each run.
+Mandatory arguments to long versions are mandatory for short versions too.
+-h, --help              print usage summary (this)
+-l, --list              list all of the saved items, enumerated
+-c, --count             print a simple count of all saved items
+-a, --add "item"        add text between quotes as a new item
+-r, --remove (1..n)     remove the specified item
+-v, --version           show version and license information
+
+-----
+
+Bug reports and developement suggestions:
+Create a github issue, or e-mail me at <mw@michalwalczak.eu>
+
+[Comming soon]
+Any AUR package issues - please comment on the AUR page.
