@@ -26,9 +26,9 @@ Installation:
     OR
     Put anywhere and run with 'python stodo' (or 'python3 stodo')
     OR
-    [Comming soon]
     Find on AUR (Arch Linux) and install manually or with your favourite AUR
     pacman wrapper.
+    AUR page - <http://aur.archlinux.org/packages/stodo/>
 
 -----
 Usage info available via 'stodo -h' or 'stodo --help', copy below.
@@ -48,5 +48,5 @@ Mandatory arguments to long versions are mandatory for short versions too.
 Bug reports and developement suggestions:
 Create a github issue, or e-mail me at <mw@michalwalczak.eu>
 
-[Comming soon]
-Any AUR package issues - please comment on the AUR page.
+Any AUR package issues - please comment on the AUR page below.
+<https://aur.archlinux.org/packages/stodo/>
