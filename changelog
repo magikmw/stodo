@@ -1,0 +1,5 @@
+1.0
+* Basic program, as described in README
+
+1.0.1
+* Fixed the breakage introduced by newlines in arguments of -a by replacing them with spaces
