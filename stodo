@@ -25,9 +25,9 @@ import getopt
 
 # globals
 ver = "1.0.1"
-database = os.path.expanduser("~/.stodo")
+database = os.path.expanduser("~/.stodo") # path of the database file
 
-def usage(): #simple function to print the help/usage
+def usage(): # simple function to print the help/usage
     print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
     print("Mandatory arguments to long versions are mandatory for short versions too.")
@@ -39,7 +39,7 @@ def usage(): #simple function to print the help/usage
     print("   -v, --version\tshow version and license information")
     print("Please report bugs and send developement suggestions to <mw@michalwalczak.eu>")
 
-def version():
+def version(): # print version and license info
     print("stodo - simple TODO CLI application " + ver)
     print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
     print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
@@ -58,17 +58,19 @@ def file_exists():
     data_file.close()
 
 def count_items():
+    # count items stored on the list
     file_exists()
 
     with open(database) as data_file:
-        i = - 1
-        for i, l in enumerate(data_file):
+        i = - 1 #start from -1 so 0 items will display correctly
+        for i, l in enumerate(data_file): #counting
             pass
         return i + 1
 
     data_file.close()
 
 def display_list():
+    # simply display a list of all items stored on the user's database
     file_exists()
 
     if count_items() == 0:
@@ -76,22 +78,25 @@ def display_list():
         return 0
 
     data_file = open( database, "r")
-    s = ""
+    s = "" #read file lines into one string
     for i in range(count_items()):
         s += (data_file.readline())
 
-    print(s.rstrip())
+    print(s.rstrip()) #remove the trailing newline (print ends output with '\n')
 
     data_file.close()
 
 def display_count():
+    # just take count_items() and print the result
     file_exists()
 
     print(count_items())
 
 def add_item(add_string):
+    # adds an item to the database
     file_exists()
 
+    # determine the next id for an item via checking the highest one
     if count_items() != 0:
         lines = [line.rstrip('\n') for line in open(database)]
         highest_number = [token for token in lines[len(lines)-1].split() if token.isdigit()][0]
@@ -99,44 +104,50 @@ def add_item(add_string):
     else:
         highest_number = 1
     
-    #replace the newlines in the added string with spaces
+    # replace the newlines in the added string with spaces
     add_string = add_string.replace('\n', ' ')
 
+    # append the new item at the end of the database file
     data_file = open( database, "a+")
     data_file.write(str(highest_number) + " - " + add_string + "\n")
     data_file.close()
 
 def remove_item(remove_number):
+    # removes an item determined by it's id (not line it's on)
     file_exists()
 
-    lines = [line.rstrip('\n') for line in open(database)]
+    lines = [line.rstrip('\n') for line in open(database)] # read all lines
     item_number = 0
     removed_item = 0
-    for line in lines:
+    for line in lines: # find the removed item and pop it out of the list
         item_number = [token for token in line.split() if token.isdigit()][0]
         if item_number == remove_number:
             removed_item = lines.pop(lines.index(line))
             break
 
+    # write all the remaining lines back in
     if removed_item != 0:
         data_file = open( database, "w")
         for line in lines:
             data_file.write(line + "\n")
         data_file.close()
+        # print the removed line
         print("Item *" + removed_item + "* has been removed.")
     else:
         print("No item number ", remove_number, "found.")
 
 def main(argv):
+    # main function, calls the functions that actually do stuff
+    # only runs the first option with arguments and exits
     try:
         opts, args = getopt.getopt(argv, "hvlca:r:", ["help", "version", "list", "count", "add=", "remove="])
 
-    except getopt.GetoptError:
-        usage()
+    except getopt.GetoptError: # unknown option found
+        usage() # print usage info
         sys.exit(2)
 
-    if len(opts) == 0:
-        usage()
+    if len(opts) == 0: # no options specified
+        usage() # print usage info
         sys.exit()
 
     for opt, arg in opts:
@@ -164,4 +175,4 @@ def main(argv):
                 sys.exit()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv[1:]) # run the main function, turncate the script name from arguments
