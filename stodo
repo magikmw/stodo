@@ -24,7 +24,7 @@ import os
 import getopt
 
 # globals
-ver = "1.0"
+ver = "1.0.1"
 database = os.path.expanduser("~/.stodo")
 
 def usage(): #simple function to print the help/usage
@@ -99,6 +99,9 @@ def add_item(add_string):
     else:
         highest_number = 1
     
+    #replace the newlines in the added string with spaces
+    add_string = add_string.replace('\n', ' ')
+
     data_file = open( database, "a+")
     data_file.write(str(highest_number) + " - " + add_string + "\n")
     data_file.close()
