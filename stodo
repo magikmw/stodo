@@ -24,7 +24,7 @@ import os
 import getopt
 
 # globals
-ver = "1.0.1"
+ver = "1.0.1-git"
 database = os.path.expanduser("~/.stodo") # path of the database file
 
 def usage(): # simple function to print the help/usage
