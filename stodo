@@ -109,7 +109,7 @@ def add_item(add_string):
 
     # append the new item at the end of the database file
     data_file = open( database, "a+")
-    data_file.write(str(highest_number) + " - " + add_string + "\n")
+    data_file.write(str(highest_number) + "\t-\t" + add_string + "\n")
     data_file.close()
 
 def remove_item(remove_number):
