@@ -16,10 +16,11 @@ and perhaps a real database integration at some point.
 ---
 
 Dependency:
-    Requires python3.
-    Note that the hashbang in the first line points to python, Arch Linux style.
-    With some tweaking it might be possible to run with python2, not sure if
-    I used any 3-specific libraries, besides changed syntax.
+    Requires python
+    Written with python3 in mind, and somewhat tested in python2.
+    Consider python2 not-supported, but feel free to point out any bugs.
+
+    Hashbang in the script points to /bin/env python by default.
 
 Installation:
     Put anywhere, set permission to execution and run './stodo'

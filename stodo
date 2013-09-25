@@ -1,4 +1,5 @@
 #!/bin/env python
+# -*- coding: UTF-8 -*-
 
 """
     stodo - a simple CLI todo application
