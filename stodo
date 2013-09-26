@@ -23,10 +23,11 @@
 import sys
 import os
 import getopt
+import sqlite3 as sql
 
 # globals
 ver = "1.0.2"
-database = os.path.expanduser("~/.stodo") # path of the database file
+db_path = os.path.expanduser('~/.stodo') # path of the database file
 
 def usage():
     """Print help/usage information."""
@@ -49,22 +50,22 @@ def version():
     print("This is free software: you are free to change and redistribute it.")
     print("There is NO WARRANTY, to the extent permitted by law.")
 
-def file_exists():
-    """Check if the database file exists and attempt to create it if it doesn't."""
+def db_connect():
+    """Create / connect to an existing database file, return the connection object."""
     try:
-        data_file = open( database, "a+");
+        db = sql.connect( db_path )
     except IOError:
         print("Error: Database file not found, and cannot be created.")
         print("Make sure you have write and read access to the folder (user's home folder by default).")
         sys.exit(2)
 
-    data_file.close()
+    return db
 
 def count_items():
     """"Count items stored on the list, return it."""
     file_exists()
 
-    with open(database) as data_file:
+    with open(db_path) as data_file:
         i = - 1 #start from -1 so 0 items will display correctly
         for i, l in enumerate(data_file): #counting
             pass
@@ -80,7 +81,7 @@ def display_list():
         print("No items on the list.")
         return 0
 
-    data_file = open( database, "r")
+    data_file = open( db_path, "r")
     s = "" #read file lines into one string
     for i in range(count_items()):
         s += (data_file.readline())
@@ -95,7 +96,7 @@ def add_item(add_string):
 
     # determine the next id for an item via checking the highest one
     if count_items() != 0:
-        lines = [line.rstrip('\n') for line in open(database)]
+        lines = [line.rstrip('\n') for line in open(db_path)]
         highest_number = [token for token in lines[len(lines)-1].split() if token.isdigit()][0]
         highest_number = int(highest_number)+1
     else:
@@ -105,7 +106,7 @@ def add_item(add_string):
     add_string = add_string.replace('\n', ' ')
 
     # append the new item at the end of the database file
-    data_file = open( database, "a+")
+    data_file = open( db_path, "a+")
     data_file.write(str(highest_number) + "\t-\t" + add_string + "\n")
     data_file.close()
 
@@ -113,7 +114,7 @@ def remove_item(remove_number):
     """Removes an item determined by it's id (not line it's on)."""
     file_exists()
 
-    lines = [line.rstrip('\n') for line in open(database)] # read all lines
+    lines = [line.rstrip('\n') for line in open(db_path)] # read all lines
     item_number = 0
     removed_item = 0
     for line in lines: # find the removed item and pop it out of the list
@@ -124,7 +125,7 @@ def remove_item(remove_number):
 
     # write all the remaining lines back in
     if removed_item != 0:
-        data_file = open( database, "w")
+        data_file = open( db_path, "w")
         for line in lines:
             data_file.write(line + "\n")
         data_file.close()
