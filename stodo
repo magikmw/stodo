@@ -178,3 +178,5 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:]) # run the main function, turncate the script name from arguments
+else:
+    print("stodo is not ment to be ran as an imported module.")
