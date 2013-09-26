@@ -107,20 +107,25 @@ def count_items():
 
 def display_list():
     """Display a list of all items stored on the user's database, line by line."""
-    db_connect()
 
-    if count_items() == 0:
+    item_number = count_items()
+
+    if item_number == 0:
         print("No items on the list.")
-        return 0
+        return
 
-    data_file = open( db_path, "r")
-    s = "" #read file lines into one string
-    for i in range(count_items()):
-        s += (data_file.readline())
+    db = db_connect()
+    c = db.cursor()
 
-    print(s.rstrip()) #remove the trailing newline (print ends output with '\n')
+    c.execute('''SELECT id FROM stodo''')
+    ids = c.fetchall()
+    c.execute('''SELECT data FROM stodo''')
+    lines = c.fetchall()
 
-    data_file.close()
+    c.close()
+
+    for i in range(item_number):
+        print(str(ids[i][0]) + "\t- " + lines[i][0])
 
 def add_item(add_string):
     """Adds an item to the database."""
