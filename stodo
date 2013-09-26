@@ -89,12 +89,6 @@ def display_list():
 
     data_file.close()
 
-def display_count():
-    """Take count_items()'s value and print the result."""
-    file_exists()
-
-    print(count_items())
-
 def add_item(add_string):
     """Adds an item to the database."""
     file_exists()
@@ -138,6 +132,12 @@ def remove_item(remove_number):
         print("Item *" + removed_item + "* has been removed.")
     else:
         print("No item number ", remove_number, "found.")
+
+def display_count():
+    """Take count_items()'s value and print the result."""
+    file_exists()
+
+    print(count_items())
 
 def main(argv):
     """Main function, executes the first valid option and terminates."""
