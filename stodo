@@ -20,17 +20,18 @@
     If not, see <http://opensource.org/licenses/GPL-3.0>.
 """
 
-import sys
-import os
-import getopt
+from sys import exit
+from os.path import expanduser
+from getopt import getopt, GetoptError
 import sqlite3 as sql
 
 # globals
 ver = "1.0.2"
-db_path = os.path.expanduser('~/.stodo') # path of the database file
+db_path = expanduser( '~/.stodo.db' ) # path of the database file
 
 def usage():
     """Print help/usage information."""
+
     print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
     print("Mandatory arguments to long versions are mandatory for short versions too.")
@@ -44,6 +45,7 @@ def usage():
 
 def version():
     """Print version and license information."""
+
     print("stodo - simple TODO CLI application " + ver)
     print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
     print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
@@ -63,7 +65,7 @@ def db_connect():
 
 def count_items():
     """"Count items stored on the list, return it."""
-    file_exists()
+    db_connect()
 
     with open(db_path) as data_file:
         i = - 1 #start from -1 so 0 items will display correctly
@@ -75,7 +77,7 @@ def count_items():
 
 def display_list():
     """Display a list of all items stored on the user's database, line by line."""
-    file_exists()
+    db_connect()
 
     if count_items() == 0:
         print("No items on the list.")
@@ -92,7 +94,7 @@ def display_list():
 
 def add_item(add_string):
     """Adds an item to the database."""
-    file_exists()
+    db_connect()
 
     # determine the next id for an item via checking the highest one
     if count_items() != 0:
@@ -112,7 +114,7 @@ def add_item(add_string):
 
 def remove_item(remove_number):
     """Removes an item determined by it's id (not line it's on)."""
-    file_exists()
+    db_connect()
 
     lines = [line.rstrip('\n') for line in open(db_path)] # read all lines
     item_number = 0
@@ -136,48 +138,49 @@ def remove_item(remove_number):
 
 def display_count():
     """Take count_items()'s value and print the result."""
-    file_exists()
+    db_connect()
 
     print(count_items())
 
 def main(argv):
     """Main function, executes the first valid option and terminates."""
     try:
-        opts, args = getopt.getopt(argv, "hvlca:r:", ["help", "version", "list", "count", "add=", "remove="])
+        opts, args = getopt(argv, "hvlca:r:", ["help", "version", "list", "count", "add=", "remove="])
 
-    except getopt.GetoptError: # unknown option found
+    except GetoptError: # unknown option found
         usage() # print usage info
-        sys.exit(2)
+        exit(2)
 
     if len(opts) == 0: # no options specified
         usage() # print usage info
-        sys.exit()
+        exit()
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             usage()
-            sys.exit()
+            exit()
         elif opt in ("-v", "--version"):
             version()
-            sys.exit()
+            exit()
         elif opt in ("-l", "--list"):
             display_list()
-            sys.exit()
+            exit()
         elif opt in ("-c", "--count"):
             display_count()
-            sys.exit()
+            exit()
         elif opt in ("-a", "--add"):
             add_item(arg)
-            sys.exit()
+            exit()
         elif opt in ("-r", "--remove"):
             if arg.isdigit():
                 remove_item(arg)
-                sys.exit()
+                exit()
             else:
                 print("-r / --remove accepts only natural numbers, -h or --help for usage")
-                sys.exit()
+                exit()
 
 if __name__ == "__main__":
-    main(sys.argv[1:]) # run the main function, turncate the script name from arguments
+    from sys import argv
+    main(argv[1:]) # run the main function, turncate the script name from arguments
 else:
     print("stodo is not ment to be ran as an imported module.")
