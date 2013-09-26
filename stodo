@@ -129,23 +129,28 @@ def display_list():
 
 def add_item(add_string):
     """Adds an item to the database."""
-    db_connect()
+    db = db_connect()
 
-    # determine the next id for an item via checking the highest one
+    # Determine the next id for an item via checking the highest one
     if count_items() != 0:
-        lines = [line.rstrip('\n') for line in open(db_path)]
-        highest_number = [token for token in lines[len(lines)-1].split() if token.isdigit()][0]
-        highest_number = int(highest_number)+1
+        c = db.cursor()
+
+        c.execute('''SELECT MAX(id) FROM stodo''')
+        next_id = c.fetchone()[0] + 1
+
+        c.close()
     else:
-        highest_number = 1
+        next_id = 1
     
     # replace the newlines in the added string with spaces
     add_string = add_string.replace('\n', ' ')
 
-    # append the new item at the end of the database file
-    data_file = open( db_path, "a+")
-    data_file.write(str(highest_number) + "\t-\t" + add_string + "\n")
-    data_file.close()
+    c = db.cursor()
+
+    c.execute('INSERT INTO stodo VALUES (?,?)', (next_id, add_string))
+    db.commit()
+
+    c.close()
 
 def remove_item(remove_number):
     """Removes an item determined by it's id (not line it's on)."""
