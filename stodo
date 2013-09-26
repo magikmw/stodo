@@ -154,27 +154,22 @@ def add_item(add_string):
 
 def remove_item(remove_number):
     """Removes an item determined by it's id (not line it's on)."""
-    db_connect()
+    db = db_connect()
 
-    lines = [line.rstrip('\n') for line in open(db_path)] # read all lines
-    item_number = 0
-    removed_item = 0
-    for line in lines: # find the removed item and pop it out of the list
-        item_number = [token for token in line.split() if token.isdigit()][0]
-        if item_number == remove_number:
-            removed_item = lines.pop(lines.index(line))
-            break
+    c = db.cursor()
 
-    # write all the remaining lines back in
-    if removed_item != 0:
-        data_file = open( db_path, "w")
-        for line in lines:
-            data_file.write(line + "\n")
-        data_file.close()
+    c.execute('''SELECT * FROM stodo WHERE id=?''', remove_number)
+    removed_item = c.fetchone()
+    if removed_item is not None:
+        c.execute('''DELETE FROM stodo WHERE id=?''', remove_number)
+        db.commit()
+
         # print the removed line
-        print("Item *" + removed_item + "* has been removed.")
+        print("Item * " + str(removed_item[0]) + " - " + removed_item[1] + " * has been removed.")
+
     else:
-        print("No item number ", remove_number, "found.")
+        print("No item number " + remove_number + " found.")
+        c.close()
 
 def display_count():
     """Take count_items()'s value and print the result."""
