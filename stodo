@@ -87,7 +87,7 @@ def db_connect():
 
     if new_db == True: # Create the database table in the new database file.
         c = db.cursor()
-        c.execute('''create table stodo
+        c.execute('''CREATE TABLE stodo
             (id INTEGER, data text)''')
         db.commit()
         c.close()
@@ -96,15 +96,14 @@ def db_connect():
 
 def count_items():
     """"Count items stored on the list, return it."""
-    db_connect()
+    db = db_connect()
+    c = db.cursor()
 
-    with open(db_path) as data_file:
-        i = - 1 #start from -1 so 0 items will display correctly
-        for i, l in enumerate(data_file): #counting
-            pass
-        return i + 1
+    c.execute('''SELECT Count(*) FROM stodo''')
+    value = c.fetchone()[0]
 
-    data_file.close()
+    c.close
+    return value
 
 def display_list():
     """Display a list of all items stored on the user's database, line by line."""
