@@ -64,7 +64,7 @@ def is_sqlite3( filename ):
         Header = fd.read(100)
         fd.close()
 
-        if Header[0:16] == 'SQLite format 3\000':
+        if Header[0:15] == b'SQLite format 3':
             return True
         else:
             return False
@@ -85,7 +85,7 @@ def db_connect():
         print("Make sure you have write and read access to the folder (user's home folder by default).")
         exit(2)
 
-    if new_db == True: # Create the database table.
+    if new_db == True: # Create the database table in the new database file.
         c = db.cursor()
         c.execute('''create table stodo
             (id INTEGER, data text)''')
