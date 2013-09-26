@@ -10,17 +10,20 @@ Creates a file (~/.stodo by default) and allows you to append, remove, display
 and count items. Fully CLI, interface consists of few simple options.
 Easy to embedd in a login MoTD, etc.
 
-Right now the basic program is done. If I find I use it enough, my plans for now
-include simple tag interface that would allow for categorization of the entries,
-and perhaps a real database integration at some point.
+Basic program is implemented, currently using SQLite database.
+Tagging and other improvements are planned.
+
 ---
 
-Dependency:
-    Requires python
-    Written with python3 in mind, and somewhat tested in python2.
-    Consider python2 not-supported, but feel free to point out any bugs.
+Dependencies:
+    * Requires python:
+        Written with python3 in mind, and somewhat tested in python2.
+        Consider python2 not-supported, but feel free to point out any bugs.
+        Hashbang in the script points to /bin/env python by default.
 
-    Hashbang in the script points to /bin/env python by default.
+    * Requires sqlite.
+
+---
 
 Installation:
     Put anywhere, set permission to execution and run './stodo'
@@ -32,6 +35,7 @@ Installation:
     AUR page - <http://aur.archlinux.org/packages/stodo/>
 
 -----
+
 Usage info available via 'stodo -h' or 'stodo --help', copy below.
 
 Usage: stodo OPTION [ARGUMENT]
