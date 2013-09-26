@@ -147,7 +147,7 @@ def add_item(add_string):
 
     c = db.cursor()
 
-    c.execute('INSERT INTO stodo VALUES (?,?)', (next_id, add_string))
+    c.execute('''INSERT INTO stodo VALUES (?,?)''', (next_id, add_string))
     db.commit()
 
     c.close()
