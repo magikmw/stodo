@@ -6,4 +6,4 @@
 
 1.0.1+ (git)
 * New items get tabs instead of spaces in number(tab)dash(tab)data
-* Added encoding info to the script for python2, should work now everywhere
+* Added encoding info to the script for python2, should work now everywhere (Linux)
