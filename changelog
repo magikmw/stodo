@@ -4,6 +4,6 @@
 1.0.1
 * Fixed the breakage introduced by newlines in arguments of -a by replacing them with spaces
 
-1.0.1+ (git)
+1.0.2
 * New items get tabs instead of spaces in number(tab)dash(tab)data
 * Added encoding info to the script for python2, should work now everywhere (Linux)
