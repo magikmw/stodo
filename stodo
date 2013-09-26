@@ -87,8 +87,7 @@ def db_connect():
 
     if new_db == True: # Create the database table in the new database file.
         c = db.cursor()
-        c.execute('''CREATE TABLE stodo
-            (id INTEGER, data text)''')
+        c.execute('''CREATE TABLE stodo (id INTEGER, data text)''')
         db.commit()
         c.close()
 
