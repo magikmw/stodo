@@ -28,7 +28,8 @@ import getopt
 ver = "1.0.1-git"
 database = os.path.expanduser("~/.stodo") # path of the database file
 
-def usage(): # simple function to print the help/usage
+def usage():
+    """Print help/usage information."""
     print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
     print("Mandatory arguments to long versions are mandatory for short versions too.")
@@ -40,7 +41,8 @@ def usage(): # simple function to print the help/usage
     print("   -v, --version\tshow version and license information")
     print("Please report bugs and send developement suggestions to <mw@michalwalczak.eu>")
 
-def version(): # print version and license info
+def version():
+    """Print version and license information."""
     print("stodo - simple TODO CLI application " + ver)
     print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
     print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
@@ -48,7 +50,7 @@ def version(): # print version and license info
     print("There is NO WARRANTY, to the extent permitted by law.")
 
 def file_exists():
-    # Check if the database file exists and attempt to create it if it doesn't
+    """Check if the database file exists and attempt to create it if it doesn't."""
     try:
         data_file = open( database, "a+");
     except IOError:
@@ -59,7 +61,7 @@ def file_exists():
     data_file.close()
 
 def count_items():
-    # count items stored on the list
+    """"Count items stored on the list, return it."""
     file_exists()
 
     with open(database) as data_file:
@@ -71,7 +73,7 @@ def count_items():
     data_file.close()
 
 def display_list():
-    # simply display a list of all items stored on the user's database
+    """Display a list of all items stored on the user's database, line by line."""
     file_exists()
 
     if count_items() == 0:
@@ -88,13 +90,13 @@ def display_list():
     data_file.close()
 
 def display_count():
-    # just take count_items() and print the result
+    """Take count_items()'s value and print the result."""
     file_exists()
 
     print(count_items())
 
 def add_item(add_string):
-    # adds an item to the database
+    """Adds an item to the database."""
     file_exists()
 
     # determine the next id for an item via checking the highest one
@@ -114,7 +116,7 @@ def add_item(add_string):
     data_file.close()
 
 def remove_item(remove_number):
-    # removes an item determined by it's id (not line it's on)
+    """Removes an item determined by it's id (not line it's on)."""
     file_exists()
 
     lines = [line.rstrip('\n') for line in open(database)] # read all lines
@@ -138,8 +140,7 @@ def remove_item(remove_number):
         print("No item number ", remove_number, "found.")
 
 def main(argv):
-    # main function, calls the functions that actually do stuff
-    # only runs the first option with arguments and exits
+    """Main function, executes the first valid option and terminates."""
     try:
         opts, args = getopt.getopt(argv, "hvlca:r:", ["help", "version", "list", "count", "add=", "remove="])
 
