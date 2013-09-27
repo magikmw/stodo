@@ -26,7 +26,7 @@ from getopt import getopt, GetoptError
 import sqlite3 as sql
 
 # globals
-ver = "1.1"
+ver = "1.1-devel"
 db_path = expanduser( '~/.stodo.db' ) # path of the database file
 
 def usage():
@@ -108,9 +108,7 @@ def count_items():
 def display_list():
     """Display a list of all items stored on the user's database, line by line."""
 
-    item_number = count_items()
-
-    if item_number == 0:
+    if count_items() == 0:
         print("No items on the list.")
         return
 
@@ -124,8 +122,8 @@ def display_list():
 
     c.close()
 
-    for i in range(item_number):
-        print(str(ids[i][0]) + "\t- " + lines[i][0])
+    for i,line in zip(ids,lines):
+        print(str(i[0]) + "\t- " + line[0])
 
 def add_item(add_string):
     """Adds an item to the database."""
