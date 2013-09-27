@@ -1,23 +1,23 @@
 #!/bin/env python
 # -*- coding: UTF-8 -*-
 
-"""
-    stodo - a simple CLI todo application
-    Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>
+"""stodo - a simple CLI todo application
+Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.
-    If not, see <http://opensource.org/licenses/GPL-3.0>.
+You should have received a copy of the GNU General Public License
+along with this program.
+If not, see <http://opensource.org/licenses/GPL-3.0>.
+
 """
 
 from sys import exit
@@ -25,149 +25,156 @@ from os.path import expanduser
 from getopt import getopt, GetoptError
 import sqlite3 as sql
 
-# globals
-ver = "1.1-devel"
-db_path = expanduser( '~/.stodo.db' ) # path of the database file
+_ver = "1.1-devel"
+_db_path = expanduser('~/.stodo.db') # Path of the database file.
 
 def usage():
     """Print help/usage information."""
 
     print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
-    print("Mandatory arguments to long versions are mandatory for short versions too.")
+    print("Mandatory arguments to long versions are mandatory for short \
+                                                                versions too.")
     print("   -h, --help\t\tprint usage summary (this)")
     print("   -l, --list\t\tlist all of the saved items, enumerated")
-    print("   -c, --count\t\tprint a simple count of all saved items")
+    print("   -cursor, --count\t\tprint a simple count of all saved items")
     print("   -a, --add \"item\"\tadd text between quotes as a new item")
     print("   -r, --remove (1...n)\tremove the specified item")
     print("   -v, --version\tshow version and license information")
-    print("Please report bugs and send developement suggestions to <mw@michalwalczak.eu>")
+    print("Please report bugs and send developement suggestions to \
+                                                        <mw@michalwalczak.eu>")
 
 def version():
     """Print version and license information."""
 
-    print("stodo - simple TODO CLI application " + ver)
+    print("stodo - simple TODO CLI application " + _ver)
     print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
-    print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
+    print("License GPLv3+: GNU GPL version 3 or later \
+                                        <http://gnu.org/licenses/gpl.html>.")
     print("This is free software: you are free to change and redistribute it.")
     print("There is NO WARRANTY, to the extent permitted by law.")
 
-def is_sqlite3( filename ):
+def is_sqlite3(filename):
     """Checks if a file exists, is acessible and if it's a sqlite3 db."""
     from os.path import isfile, getsize
 
-    if not isfile( filename ):
+    if not isfile(filename):
         return False
-    if getsize ( filename ) < 100: # SQLite database file header is 100 bytes
+    if getsize ( filename ) < 100: # SQLite database file header is 100 bytes.
         return False
     else:
-        fd = open( filename, 'rb')
-        Header = fd.read(100)
+        fd = open(filename, 'rb')
+        header = fd.read(100)
         fd.close()
 
-        if Header[0:15] == b'SQLite format 3':
+        if header[0:15] == b'SQLite format 3':
             return True
         else:
             return False
 
 def db_connect():
-    """Create / connect to an existing database file, return the connection object."""
+    """Create / connect to an existing database file, return \
+                                            the connection object."""
 
     new_db = False # Is the database new (no table nor data)?
 
-    if not is_sqlite3( db_path ):
+    if not is_sqlite3(_db_path):
         print("Database file does not exist, attempting to create...")
         new_db = True
 
     try:
-        db = sql.connect( db_path )
+        db = sql.connect(_db_path)
     except IOError:
         print("Error: Database file not found, and cannot be created.")
-        print("Make sure you have write and read access to the folder (user's home folder by default).")
+        print("Make sure you have write and read access to the folder \
+                                        (user's home folder by default).")
         exit(2)
 
     if new_db == True: # Create the database table in the new database file.
-        c = db.cursor()
-        c.execute('''CREATE TABLE stodo (id INTEGER, data text)''')
+        cursor = db.cursor()
+        cursor.execute('''CREATE TABLE stodo (id INTEGER, data text)''')
         db.commit()
-        c.close()
+        cursor.close()
 
     return db
 
 def count_items():
     """"Count items stored on the list, return it."""
     db = db_connect()
-    c = db.cursor()
+    cursor = db.cursor()
 
-    c.execute('''SELECT Count(*) FROM stodo''')
-    value = c.fetchone()[0]
+    cursor.execute('''SELECT Count(*) FROM stodo''')
+    value = cursor.fetchone()[0]
 
-    c.close
+    cursor.close
     return value
 
 def display_list():
-    """Display a list of all items stored on the user's database, line by line."""
+    """Display a list of all items stored on the user's database, \
+                                                            line by line."""
 
     if count_items() == 0:
         print("No items on the list.")
         return
 
     db = db_connect()
-    c = db.cursor()
+    cursor = db.cursor()
 
-    c.execute('''SELECT id FROM stodo''')
-    ids = c.fetchall()
-    c.execute('''SELECT data FROM stodo''')
-    lines = c.fetchall()
+    cursor.execute('''SELECT id FROM stodo''')
+    id_list = cursor.fetchall()
+    cursor.execute('''SELECT data FROM stodo''')
+    line_list = cursor.fetchall()
 
-    c.close()
+    cursor.close()
 
-    for i,line in zip(ids,lines):
-        print(str(i[0]) + "\t- " + line[0])
+    for id_,line in zip(id_list,line_list):
+        print(str(id_[0]) + "\t- " + line[0])
 
 def add_item(add_string):
     """Adds an item to the database."""
     db = db_connect()
 
-    # Determine the next id for an item via checking the highest one
+    # Determine the next id for an item via checking the highest one.
     if count_items() != 0:
-        c = db.cursor()
+        cursor = db.cursor()
 
-        c.execute('''SELECT MAX(id) FROM stodo''')
-        next_id = c.fetchone()[0] + 1
+        cursor.execute('''SELECT MAX(id) FROM stodo''')
+        next_id = cursor.fetchone()[0] + 1
 
-        c.close()
+        cursor.close()
     else:
         next_id = 1
     
-    # replace the newlines in the added string with spaces
+    # Replace the newlines in add_string with spaces.
     add_string = add_string.replace('\n', ' ')
 
-    c = db.cursor()
+    cursor = db.cursor()
 
-    c.execute('''INSERT INTO stodo VALUES (?,?)''', (next_id, add_string))
+    cursor.execute('''INSERT INTO stodo VALUES (?,?)''', (next_id, add_string))
     db.commit()
 
-    c.close()
+    cursor.close()
 
 def remove_item(remove_number):
     """Removes an item determined by it's id (not line it's on)."""
     db = db_connect()
 
-    c = db.cursor()
+    cursor = db.cursor()
 
-    c.execute('''SELECT * FROM stodo WHERE id=?''', remove_number)
-    removed_item = c.fetchone()
+    cursor.execute('''SELECT * FROM stodo WHERE id = ?''', remove_number)
+    removed_item = cursor.fetchone()
     if removed_item is not None:
-        c.execute('''DELETE FROM stodo WHERE id=?''', remove_number)
+        cursor.execute('''DELETE FROM stodo WHERE id = ?''', remove_number)
         db.commit()
 
-        # print the removed line
-        print("Item * " + str(removed_item[0]) + " - " + removed_item[1] + " * has been removed.")
+        # Print out the removed line.
+        print(
+            "Item * " + str(removed_item[0]) + " - " + removed_item[1] + \
+                                                        "*  has been removed.")
 
     else:
         print("No item number " + remove_number + " found.")
-        c.close()
+        cursor.close()
 
 def display_count():
     """Take count_items()'s value and print the result."""
@@ -178,14 +185,15 @@ def display_count():
 def main(argv):
     """Main function, executes the first valid option and terminates."""
     try:
-        opts, args = getopt(argv, "hvlca:r:", ["help", "version", "list", "count", "add=", "remove="])
+        opts, args = getopt(argv, "hvlca:r:", ["help", "version", "list", \
+                                                "count", "add=", "remove="])
 
-    except GetoptError: # unknown option found
-        usage() # print usage info
+    except GetoptError: # Unknown option found.
+        usage()
         exit(2)
 
-    if len(opts) == 0: # no options specified
-        usage() # print usage info
+    if len(opts) == 0: # No options specified.
+        usage()
         exit()
 
     for opt, arg in opts:
@@ -198,7 +206,7 @@ def main(argv):
         elif opt in ("-l", "--list"):
             display_list()
             exit()
-        elif opt in ("-c", "--count"):
+        elif opt in ("-cursor", "--count"):
             display_count()
             exit()
         elif opt in ("-a", "--add"):
@@ -209,11 +217,12 @@ def main(argv):
                 remove_item(arg)
                 exit()
             else:
-                print("-r / --remove accepts only natural numbers, -h or --help for usage")
+                print("-r / --remove accepts only natural numbers, \
+                                                    -h or --help for usage")
                 exit()
 
 if __name__ == "__main__":
     from sys import argv
-    main(argv[1:]) # run the main function, turncate the script name from arguments
+    main(argv[1:]) # Turncate the script name from arguments.
 else:
-    print("stodo is not ment to be ran as an imported module.")
+    print("stodo is not ment to be run as an imported module.")
