@@ -12,3 +12,7 @@
 * Changed implementation from a simple text file to a SQLite database:
     This makes the application easier to upgrade, with something like tags a matter of few lines.
     HOWEVER this update ignores the existing .stodo file if you had one - need to manually re-add all the records to a new database (just use stodo -a).
+
+1.1-devel
+* Behind the scenes:
+    * Made the code compliant with www.python.org/dev/peps/pep-0008/
