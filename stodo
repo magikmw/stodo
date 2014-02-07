@@ -161,10 +161,10 @@ def remove_item(remove_number):
 
     cursor = db.cursor()
 
-    cursor.execute('''SELECT * FROM stodo WHERE id = ?''', remove_number)
+    cursor.execute('''SELECT * FROM stodo WHERE id = ?''', (remove_number,))
     removed_item = cursor.fetchone()
     if removed_item is not None:
-        cursor.execute('''DELETE FROM stodo WHERE id = ?''', remove_number)
+        cursor.execute('''DELETE FROM stodo WHERE id = ?''', (remove_number,))
         db.commit()
 
         # Print out the removed line.
