@@ -25,7 +25,7 @@ from os.path import expanduser
 from getopt import getopt, GetoptError
 import sqlite3 as sql
 
-_ver = "1.1-devel"
+_ver = "1.1.1"
 _db_path = expanduser('~/.stodo.db') # Path of the database file.
 
 def usage():
