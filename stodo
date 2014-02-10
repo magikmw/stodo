@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """stodo - a simple CLI todo application
-Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>
+Copyright (C) 2013-14 Michał Walczak <mw@michalwalczak.eu>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ def version():
     """Print version and license information."""
 
     print("stodo - simple TODO CLI application " + _ver)
-    print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
+    print("Copyright (C) 2013-14 Michał Walczak <mw@michalwalczak.eu>")
     print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
     print("This is free software: you are free to change and redistribute it.")
     print("There is NO WARRANTY, to the extent permitted by law.")
