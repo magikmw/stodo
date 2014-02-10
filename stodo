@@ -25,7 +25,7 @@ from os.path import expanduser
 from getopt import getopt, GetoptError
 import sqlite3 as sql
 
-_ver = "1.1.1"
+_ver = "1.1.2"
 _db_path = expanduser('~/.stodo.db') # Path of the database file.
 
 def usage():
@@ -33,24 +33,21 @@ def usage():
 
     print("Usage: stodo OPTION [ARGUMENT]")
     print("Only the first option on the command line will execute each run.")
-    print("Mandatory arguments to long versions are mandatory for short \
-                                                                versions too.")
+    print("Mandatory arguments to long versions are mandatory for short versions too.")
     print("   -h, --help\t\tprint usage summary (this)")
     print("   -l, --list\t\tlist all of the saved items, enumerated")
     print("   -cursor, --count\t\tprint a simple count of all saved items")
     print("   -a, --add \"item\"\tadd text between quotes as a new item")
     print("   -r, --remove (1...n)\tremove the specified item")
     print("   -v, --version\tshow version and license information")
-    print("Please report bugs and send developement suggestions to \
-                                                        <mw@michalwalczak.eu>")
+    print("Please report bugs and send developement suggestions to <mw@michalwalczak.eu>")
 
 def version():
     """Print version and license information."""
 
     print("stodo - simple TODO CLI application " + _ver)
     print("Copyright (C) 2013 Michał Walczak <mw@michalwalczak.eu>")
-    print("License GPLv3+: GNU GPL version 3 or later \
-                                        <http://gnu.org/licenses/gpl.html>.")
+    print("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.")
     print("This is free software: you are free to change and redistribute it.")
     print("There is NO WARRANTY, to the extent permitted by law.")
 
@@ -73,8 +70,7 @@ def is_sqlite3(filename):
             return False
 
 def db_connect():
-    """Create / connect to an existing database file, return \
-                                            the connection object."""
+    """Create / connect to an existing database file, return the connection object."""
 
     new_db = False # Is the database new (no table nor data)?
 
@@ -110,8 +106,7 @@ def count_items():
     return value
 
 def display_list():
-    """Display a list of all items stored on the user's database, \
-                                                            line by line."""
+    """Display a list of all items stored on the user's database, line by line."""
 
     if count_items() == 0:
         print("No items on the list.")
@@ -206,7 +201,7 @@ def main(argv):
         elif opt in ("-l", "--list"):
             display_list()
             exit()
-        elif opt in ("-cursor", "--count"):
+        elif opt in ("-c", "--count"):
             display_count()
             exit()
         elif opt in ("-a", "--add"):
@@ -217,8 +212,7 @@ def main(argv):
                 remove_item(arg)
                 exit()
             else:
-                print("-r / --remove accepts only natural numbers, \
-                                                    -h or --help for usage")
+                print("-r / --remove accepts only natural numbers, -h or --help for usage")
                 exit()
 
 if __name__ == "__main__":

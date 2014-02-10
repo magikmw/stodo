@@ -17,3 +17,7 @@
 * Critical Bug: Attempting to remove items with # higher than 9 throws an error.
 * Behind the scenes:
     * Made the code compliant with www.python.org/dev/peps/pep-0008/
+
+1.1.2
+* Fixed "-c" option not working.
+* Fixed some text displaying incorrectly.
