@@ -1,23 +1,23 @@
-1.0
-* Basic program, as described in README
-
-1.0.1
-* Fixed the breakage introduced by newlines in arguments of -a by replacing them with spaces
-
-1.0.2
-* New items get tabs instead of spaces in number(tab)dash(tab)data
-* Added encoding info to the script for python2, should work now everywhere (Linux)
-
-1.1
-* Changed implementation from a simple text file to a SQLite database:
-    This makes the application easier to upgrade, with something like tags a matter of few lines.
-    HOWEVER this update ignores the existing .stodo file if you had one - need to manually re-add all the records to a new database (just use stodo -a).
+1.1.2
+* Fixed "-c" option not working.
+* Fixed some text displaying incorrectly.
 
 1.1.1
 * Critical Bug: Attempting to remove items with # higher than 9 throws an error.
 * Behind the scenes:
     * Made the code compliant with www.python.org/dev/peps/pep-0008/
 
-1.1.2
-* Fixed "-c" option not working.
-* Fixed some text displaying incorrectly.
+1.1
+* Changed implementation from a simple text file to a SQLite database:
+    This makes the application easier to upgrade, with something like tags a matter of few lines.
+    HOWEVER this update ignores the existing .stodo file if you had one - need to manually re-add all the records to a new database (just use stodo -a).
+
+1.0.2
+* New items get tabs instead of spaces in number(tab)dash(tab)data
+* Added encoding info to the script for python2, should work now everywhere (Linux)
+
+1.0.1
+* Fixed the breakage introduced by newlines in arguments of -a by replacing them with spaces
+
+1.0
+* Basic program, as described in README
