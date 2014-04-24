@@ -56,8 +56,10 @@ def is_sqlite3(filename):
     from os.path import isfile, getsize
 
     if not isfile(filename):
+        print("%s is not a file.\n", filename)
         return False
     if getsize ( filename ) < 100: # SQLite database file header is 100 bytes.
+        print("%s is not a SQlite database.\n", filename)
         return False
     else:
         fd = open(filename, 'rb')
@@ -67,6 +69,7 @@ def is_sqlite3(filename):
         if header[0:15] == b'SQLite format 3':
             return True
         else:
+            print("%s is not an SQlite3 format database.\n", filename)
             return False
 
 def db_connect():
