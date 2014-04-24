@@ -82,8 +82,8 @@ def db_connect():
         db = sql.connect(_db_path)
     except IOError:
         print("Error: Database file not found, and cannot be created.")
-        print("Make sure you have write and read access to the folder \
-                                        (user's home folder by default).")
+        print("Make sure you have write and read access to the folder" +
+                                                " (user's home folder by default).")
         exit(2)
 
     if new_db == True: # Create the database table in the new database file.
