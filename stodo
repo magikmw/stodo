@@ -142,7 +142,7 @@ def add_item(add_string):
         cursor.close()
     else:
         next_id = 1
-    
+
     # Replace the newlines in add_string with spaces.
     add_string = add_string.replace('\n', ' ')
 
