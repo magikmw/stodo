@@ -43,6 +43,7 @@ Only the first option on the command line will execute each run.
 Mandatory arguments to long versions are mandatory for short versions too.
 -h, --help              print usage summary (this)
 -l, --list              list all of the saved items, enumerated
+-l, --list (-n,0,n)     list n or all (0) of the saved items from top or bottom
 -c, --count             print a simple count of all saved items
 -a, --add "item"        add text between quotes as a new item
 -r, --remove (1..n)     remove the specified item

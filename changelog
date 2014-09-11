@@ -1,3 +1,7 @@
+1.1.3
+* New argument for '-l' - display n items from bottom or -n items from top
+    '0' is the old 'display all' behaviour
+
 1.1.2
 * Fixed "-c" option not working.
 * Fixed some text displaying incorrectly.
