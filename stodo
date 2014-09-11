@@ -108,7 +108,7 @@ def count_items():
     cursor.close
     return value
 
-def display_list():
+def display_list(n=0):
     """Display a list of all items stored on the user's database, line by line."""
 
     if count_items() == 0:
@@ -180,10 +180,17 @@ def display_count():
 
     print(count_items())
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 def main(argv):
     """Main function, executes the first valid option and terminates."""
     try:
-        opts, args = getopt(argv, "hvlca:r:", ["help", "version", "list", \
+        opts, args = getopt(argv, "hvl:ca:r:", ["help", "version", "list=", \
                                                 "count", "add=", "remove="])
 
     except GetoptError: # Unknown option found.
@@ -202,8 +209,14 @@ def main(argv):
             version()
             exit()
         elif opt in ("-l", "--list"):
-            display_list()
-            exit()
+            if is_number(arg):
+                print("arg")
+                display_list(arg)
+                exit()
+            else:
+                display_list()
+                print("no arg")
+                exit()
         elif opt in ("-c", "--count"):
             display_count()
             exit()
@@ -211,7 +224,7 @@ def main(argv):
             add_item(arg)
             exit()
         elif opt in ("-r", "--remove"):
-            if arg.isdigit():
+            if is_number(arg):
                 remove_item(arg)
                 exit()
             else:
