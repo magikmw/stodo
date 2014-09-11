@@ -35,7 +35,7 @@ def usage():
     print("Only the first option on the command line will execute each run.")
     print("Mandatory arguments to long versions are mandatory for short versions too.")
     print("   -h, --help\t\tprint usage summary (this)")
-    print("   -l, --list\t\tlist all of the saved items, enumerated")
+    print("   -l, --list (-n,0,n)\tlist n or all (0) of the saved items from top or bottom.")
     print("   -c, --count\t\tprint a simple count of all saved items")
     print("   -a, --add \"item\"\tadd text between quotes as a new item")
     print("   -r, --remove (1...n)\tremove the specified item")
@@ -108,8 +108,8 @@ def count_items():
     cursor.close
     return value
 
-def display_list(n=0):
-    """Display a list of all items stored on the user's database, line by line."""
+def display_list(n):
+    """Display a list of items stored on the user's database, line by line."""
 
     if count_items() == 0:
         print("No items on the list.")
@@ -125,8 +125,33 @@ def display_list(n=0):
 
     cursor.close()
 
-    for id_,line in zip(id_list,line_list):
-        print(str(id_[0]) + "\t- " + line[0])
+    # n isn't 0 - determine what the user wants (negative or positive)
+    if n != 0:
+        n = int(n)
+        skip_count = count_items() - abs(n)
+        if skip_count <= 0: # there are less entries than the user would like to
+                            # cut out
+            n = 0
+        elif n > 0: # we're displaying n lines from the bottom
+            for id_,line in zip(id_list,line_list):
+                if skip_count == 0:
+                    print(str(id_[0]) + "\t- " + line[0])
+                else: skip_count -= 1
+            return
+        elif n < 0: # we're displaying n lines from the top and stop
+            for id_,line in zip(id_list,line_list):
+                if n < 0:
+                    print(str(id_[0]) + "\t- " + line[0])
+                    n += 1
+                else:
+                    return
+
+    # original behaviour - print the whole list
+    if n == 0:
+        for id_,line in zip(id_list,line_list):
+            print(str(id_[0]) + "\t- " + line[0])
+        return
+
 
 def add_item(add_string):
     """Adds an item to the database."""
@@ -210,12 +235,10 @@ def main(argv):
             exit()
         elif opt in ("-l", "--list"):
             if is_number(arg):
-                print("arg")
                 display_list(arg)
                 exit()
             else:
-                display_list()
-                print("no arg")
+                print("-r / --list accepts only integers, -h or --help for usage")
                 exit()
         elif opt in ("-c", "--count"):
             display_count()
