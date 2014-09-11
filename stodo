@@ -52,7 +52,7 @@ def version():
     print("There is NO WARRANTY, to the extent permitted by law.")
 
 def is_sqlite3(filename):
-    """Checks if a file exists, is acessible and if it's a sqlite3 db."""
+    """Checks if a file exists, is acessible and if it's an sqlite3 db."""
     from os.path import isfile, getsize
 
     if not isfile(filename):
@@ -207,7 +207,7 @@ def display_count():
 
 def is_number(s):
     try:
-        float(s)
+        float(s) # [XXX] this doesn't check if the number provided is an integer
         return True
     except ValueError:
         return False
